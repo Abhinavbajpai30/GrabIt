@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/AppContext'
 import { dummyAddress } from '../assets/assets';
+import RazorpayButton from '../models/RazorpayButton';
 
 const Cart = () => {
   const {products, navigate, cartItems, totalCartItems, totalCartAmount, updateCartItem, user, setShowUserLogin} = useContext(AppContext);
@@ -11,7 +12,7 @@ const Cart = () => {
   const [showAddress, setShowAddress] = useState(false)
   const [selectedAddress, setSelectedAddress] = useState(dummyAddress[0]);
 
-  const [paymentOption, setPaymentOption] = useState("COD");
+  const [paymentOption, setPaymentOption] = useState("Online");
 
   const getCart = () => {
     const tempArray = [];
@@ -142,13 +143,13 @@ const Cart = () => {
                   </p>
               </div>
 
-              {user ? <button className="w-full py-3 mt-6 cursor-pointer bg-indigo-500 text-white font-medium hover:bg-indigo-600 transition">
-                {paymentOption==="COD" ? "Place Order" : "Pay Now"}
-              </button> :
+              {user ? paymentOption==="COD" ? <button className="w-full py-3 mt-6 cursor-pointer bg-indigo-500 text-white font-medium hover:bg-indigo-600 transition">
+                Place Order
+              </button> : <RazorpayButton paymentButtonId={import.meta.env.VITE_Razorpay_Button_ID}/>
+              :
               <button onClick={() => setShowUserLogin(true)} className="w-full py-3 mt-6 cursor-pointer bg-indigo-500 text-white font-medium hover:bg-indigo-600 transition">
                 Login
               </button>}
-              
           </div>
       </div>
     ) : null}
